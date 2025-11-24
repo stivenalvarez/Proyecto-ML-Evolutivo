@@ -1,0 +1,3 @@
+modelo,n_neighbors,weights,accuracy_cv,accuracy_test
+KNN_baseline,5,uniform,,
+KNN_optimizado,?,?_,,
