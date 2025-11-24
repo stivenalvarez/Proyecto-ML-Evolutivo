@@ -1,109 +1,102 @@
-[readme.md](https://github.com/user-attachments/files/23701162/readme.md)
 
-# Stiven David Alvarez Olmos
-# Optimización Evolutiva de Hiperparámetros en KNN con PyGAD
+# 🔬 Optimización Evolutiva de Hiperparámetros en KNN con PyGAD
 
-## 1. Descripción general
+Repositorio correspondiente a la actividad práctica del curso  
+**Machine Learning Evolutivo: Computación Evolutiva en Clasificadores ML**  
+Universidad de Cundinamarca.
 
-Este trabajo implementa un **Algoritmo Genético (AG)** para optimizar los
-hiperparámetros de un clasificador **K-Nearest Neighbors (KNN)** en el
-dataset **Iris** (incluido en `sklearn.datasets`).
+Este proyecto implementa un **Algoritmo Genético (AG)** para optimizar los
+hiperparámetros del clasificador **KNN (K-Nearest Neighbors)** usando la
+librería **PyGAD**, siguiendo las instrucciones de la presentación del docente.
 
-Se sigue la actividad propuesta en la presentación de
-*Machine Learning Evolutivo: Computación Evolutiva en Clasificadores ML*:
-elegir un clasificador, definir hiperparámetros y rangos, implementar
-`fitness_func` con validación cruzada y configurar PyGAD para ejecutar
-entre 10 y 30 generaciones.  
+---
 
-## 2. Clasificador elegido y justificación
+## 📘 1. Clasificador elegido y justificación
 
-- **Modelo**: `KNeighborsClassifier` de `sklearn`.
-- **Motivación**:
-  - Es un modelo sencillo e intuitivo (clasifica por mayoría entre los
-    vecinos más cercanos).
-  - Es muy sensible a la elección de *k* y al esquema de pesos, lo cual
-    lo hace un buen candidato para optimización de hiperparámetros.
-  - Permite ilustrar claramente el efecto de los hiperparámetros en el
-    rendimiento del modelo.
+Se eligió **KNN** como modelo base debido a que:
 
-## 3. Hiperparámetros y rangos de búsqueda
+- Su rendimiento depende fuertemente de *k* y del esquema de pesos.
+- Es un modelo simple e interpretativo, ideal para un ejercicio práctico.
+- Permite demostrar claramente la utilidad de un Algoritmo Genético en la
+  búsqueda de hiperparametrización óptima.
 
-Se optimizan **2 hiperparámetros**:
+---
 
-1. `n_neighbors (k)`  
-   - Tipo: entero.  
-   - Rango: `1` a `30`.  
-   - Intuición: valores pequeños tienden a sobreajustar; valores muy
-     grandes pueden subajustar.
+## ⚙️ 2. Hiperparámetros optimizados
 
-2. `weights`  
-   - Tipo: categórico.  
-   - Valores posibles: `['uniform', 'distance']`.  
-   - Intuición: con `uniform` todos los vecinos pesan igual; con
-     `distance` los vecinos cercanos tienen más influencia.
+| Hiperparámetro | Tipo | Rango |
+|----------------|------|--------|
+| `n_neighbors`  | entero | 1–30 |
+| `weights` | categórico | `uniform`, `distance` |
 
-Estos hiperparámetros se codifican en el AG como un **individuo**:
+Codificación utilizada por el AG:
 
-```text
+```
 [individuo] = [k, weights_idx]
-    k           -> entero en [1, 30]
-    weights_idx -> 0 = 'uniform', 1 = 'distance'
+k -> entero de 1 a 30
+weights_idx -> 0 = 'uniform', 1 = 'distance'
 ```
 
-## 4. Algoritmo Genético (PyGAD)
+---
 
-- Librería: `pygad.GA`.
-- **Fitness**: accuracy promedio en validación cruzada 3-fold sobre
-  `X_train, y_train` (función `cross_val_score`).
-- Parámetros principales del GA:
-  - `num_generations = 20`
-  - `num_parents_mating = 5`
-  - `sol_per_pop = 20`
-  - `num_genes = 2`
-  - `gene_space = [range(1, 31), [0, 1]]`
+## 🧬 3. Configuración del Algoritmo Genético (PyGAD)
 
-Con esto, cada generación contiene 20 soluciones distintas de
-hiperparámetros, y el AG selecciona, cruza y muta soluciones para
-mejorar la precisión media.
+- `sol_per_pop = 20`
+- `num_generations = 20`
+- `num_parents_mating = 5`
+- `gene_space = [range(1, 31), [0, 1]]`
+- Métrica objetivo (fitness): **Accuracy promedio CV con 3-fold**
 
-## 5. Resultados (resumen)
+---
 
-> **Nota:** los valores concretos dependen de cada ejecución del GA.
-> A continuación se dejan campos para que el grupo los complete tras
-> ejecutar el script.
+## 📊 4. Resultados
 
-- **Baseline KNN**  
-  - Configuración: `k = 5`, `weights = 'uniform'`  
-  - Accuracy en test: `____`
+Tras ejecutar el experimento en Google Colab, se obtuvieron los siguientes resultados:
 
-- **KNN optimizado con AG (PyGAD)**  
-  - Hiperparámetros encontrados:
-    - `k = ____`
-    - `weights = 'uniform' / 'distance'`
-  - Accuracy CV (fitness): `____`
-  - Accuracy en test: `____`
+### 🔹 Modelo baseline (sin optimizar)
+- `k = 5`
+- `weights = 'uniform'`
+- **Accuracy en test:** `0.9211`
 
-En general, se espera que el KNN optimizado logre una precisión igual o
-ligeramente superior al baseline, mostrando que la búsqueda evolutiva
-en el espacio de hiperparámetros sí tiene impacto en el desempeño.
+### 🔹 Modelo optimizado con Algoritmo Genético (PyGAD)
+- `k óptimo = 7`
+- `weights óptimo = 'distance'`
+- **Accuracy promedio CV (fitness):** `0.9642`
+- **Accuracy en test optimizado:** `0.9737`
 
-## 6. Cómo ejecutar
+📈 **Conclusión:**  
+El modelo optimizado supera al modelo baseline, pasando de un accuracy de **0.9211**
+a **0.9737**, lo cual demuestra que el Algoritmo Genético encontró una configuración
+más efectiva para KNN.
 
-1. Instalar dependencias (por ejemplo, en Google Colab):
+---
 
-   ```bash
-   pip install scikit-learn pygad matplotlib pandas
-   ```
+## ▶️ 5. Ejecución del script
 
-2. Ejecutar el script:
+### Instalar dependencias:
+```bash
+pip install scikit-learn pygad matplotlib pandas
+```
 
-   ```bash
-   python script.py
-   ```
+### Ejecutar:
+```bash
+python script.py
+```
 
-   Esto:
-   - Entrena el KNN baseline.
-   - Ejecuta el AG con PyGAD.
-   - Entrena el KNN optimizado.
-   - Muestra las métricas y matrices de confusión.
-   - Guarda un archivo `resultados_knn_ga.csv` con un resumen.
+---
+
+## 📂 6. Archivos incluidos
+
+| Archivo | Descripción |
+|---------|-------------|
+| `script.py` | Implementación del AG + KNN + evaluación |
+| `README.md` | Documentación completa del proyecto |
+| `resultados_knn_ga.csv` | Resultados del baseline y del modelo optimizado |
+
+---
+
+## 👨‍🎓 7. Autor
+Stiven David Alvarez Olmos
+Proyecto desarrollado como parte de la actividad práctica del curso  
+**Machine Learning Evolutivo**, Universidad de Cundinamarca.
+
