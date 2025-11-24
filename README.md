@@ -1,4 +1,6 @@
 [readme.md](https://github.com/user-attachments/files/23701162/readme.md)
+
+# Stiven David Alvarez Olmos
 # Optimización Evolutiva de Hiperparámetros en KNN con PyGAD
 
 ## 1. Descripción general
